@@ -1,0 +1,14 @@
+[Unit]
+Description=USB IP attach
+Requires=network-online.target
+After=network-online.target
+Before=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=python3 "/opt/application/usbip_attach.py"
+ExecStop=python3 "/opt/application/usbip_detach.py"
+
+[Install]
+WantedBy=multi-user.target
