@@ -9,7 +9,7 @@ This tutorial demonstrates how to add usb support (using usbip) to home assistan
 Create a new VM in Hyper-V manager. Install Debian 11. Follow the instructions: https://github.com/home-assistant/architecture/blob/master/adr/0014-home-assistant-supervised.md and https://github.com/home-assistant/supervised-installer to complete home assistant installation. After everything done, configure the VM to start manually, and shutdown with the host system.
 
 ### Build Windows Usbip Driver and Tools
-usbip is natively supported in Linux kernel. however it is not available on Windows. There are several paid software solutions exist (VirtualHere is one of the cheaper one for $50) but in this tutorial we will go with the free solution: https://github.com/cezanne/usbip-win. The instruction is detailed, accurate and easy to follow. By the end you should have all required driver and executables. Warning: you should always try to build the driver yourself, instead of downloading from unknown website. Driver is running in kernel space and has access to network, you really don't want any malicious code in there. To run the self-signed driver you need to put Windows in TestMode. If you don't feel comfortable of doing that, go with the commercial software. There is a good tutorial on this: https://dvlup.com/2020/10/23/usb-in-hyper-v/
+usbip is natively supported in Linux kernel. however it is not available on Windows. There are several paid software solutions exist (VirtualHere is one of the cheaper one for $50) but in this tutorial we will go with the free solution: https://github.com/cezanne/usbip-win. The instruction is detailed, accurate and easy to follow. By the end you should have all required driver and executables. ***Warning: you should always try to build the driver yourself, instead of downloading from unknown website. Driver is running in kernel space and also has access to network, you really don't want any malicious code in there.*** To run the self-signed driver you need to put Windows in TestMode. If you don't feel comfortable of doing that, go with the commercial software. There is a good tutorial on this: https://dvlup.com/2020/10/23/usb-in-hyper-v/
 
 Ok by now we finished most of the heave-lifting work
 
@@ -21,9 +21,11 @@ sudo apt-get upgrade
 sudo apt-get install usbip
 ```
 2. load the usbip_host module
+
 copy the /RPI-Server/etc/modules-load.d/usbip.conf to corresponding folder on RPI
 
 3. setup the usbip service
+
 copy the /RPI-Server/etc/systemd/system/usbip.service to corresponding folder on RPI
 In usbip.service, change the python executable to match your own configuration. python 3.9 is recommended (tested)
 copy the /RPI-Server/home/pi/usbip.service.py to corresponding folder on RPI
