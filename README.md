@@ -70,4 +70,24 @@ sudo systemctl enable usbip
 ```
 sudo systemctl enable usbip-attach
 ```
+## How It Works
+When server (Windows or RPI) starts, it issues a "usbip list -l" command to list all local usb device, it then parse the output and find the busid that matches the device_id, a binding of busid follows and finally the daemon (usbipd) starts and runs an infinite loop to handle the usb packet forwarding.
+
+When client (debian) starts, it looks through each network addresses in the python file and try issuing a "usbip list -r xx.xx.xx.xx" to retrieve the list of remote bind usb devices and extract the device_id and bus_id. If the server is not available the process will be closed after 2s timeout. Once a valid serer is identified, the client issues 'usbip attach -r xx.xx.xx.xx -b x-x.x.x' to attach to the remote server and the attached usb device appears as a local device to the rest of the system
+
+### Use RPI as Server
+1. Turn off the Windows computer
+2. Plug USB stick into RPI usb port. Reboot RPI
+3. Once RPI is booted, turn on Windows computer
+4. Script in Windows computer will start VM and script in VM takes care of the server detection and usb attachment work
+
+### Use Windows as Server
+1. Turn off the Windows computer
+2. Plug USB stick into Windows computer USB port
+3. Turn on Windows computer
+4. Script in Windows computer will bind and start usbpi daemon, then launch the VM. the rest is the same as the RPI case
+
+Basically if you follow the right sequence you can switch back and forth freely and the home assistant core will never know (or care) where is the usb stick. the stick always appears local to the home assistant. Which also means you can carry your RPI to wherever you want, this is very convenient in the case that you need to pair a z-wave device (e.g., a in wall switch) and have to get the zwave adapter really close to the device.
+
 ## Other Notes
+Probably the only negative part of this solution is that you have to set host Windows system to TestMode. As mentioned earlier Windows does not have native support to usbip and it also would not allow using a self-signed driver in regular mode. If you would like to go with commercial solution the above mechanism would probably still work but needs modification to work properly.
