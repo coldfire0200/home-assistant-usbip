@@ -27,9 +27,13 @@ copy the /RPI-Server/etc/modules-load.d/usbip.conf to corresponding folder on RP
 3. setup the usbip service
 
 copy the /RPI-Server/etc/systemd/system/usbip.service to corresponding folder on RPI
+
 In usbip.service, change the python executable to match your own configuration. python 3.9 is recommended (tested)
+
 copy the /RPI-Server/home/pi/usbip.service.py to corresponding folder on RPI
+
 in usbip.service.py, change the device_id to match your own usb device
+
 do a test run to make sure things work (no error):
 ```
 sudo systemctl enable usbip
@@ -51,11 +55,16 @@ sudo systemctl enable usbip
 ## Home Assistant (Debian) Client 
 1. install usbip
 2. load vhci-hcd module
+
 copy /Debian-Client/etc/modules-load.d/vhci-hcd.conf to corresponding folder on Debian
 3. setup the usbip service
+
 copy /Debian-Client/etc/systemd/system/usbip-attach.service to corresponding folder on Debian
+
 copy /Debian-Client/opt/application/usbip_attach.py and usbip_detach.py to corresponding folder on Debian
+
 edit the python file, change the device_id to match your own device
+
 enable the service:
 ```
 sudo systemctl enable usbip-attach
